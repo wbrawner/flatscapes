@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="surface">#FF000000</color>
+    <color name="colorSkyStart">#6060c0</color>
+    <color name="colorSkyEnd">#000000</color>
+    <color name="colorSun">#ffeeee</color>
+    <color name="colorMesa">#493350</color>
+    <color name="colorHills">#aa5a78</color>
 </resources>
