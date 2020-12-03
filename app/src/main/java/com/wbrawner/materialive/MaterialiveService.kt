@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.service.wallpaper.WallpaperService
 import android.util.Log
 import android.util.TypedValue
@@ -17,8 +18,19 @@ class MaterialiveService : WallpaperService() {
     override fun onCreateEngine() = Engine()
 
     inner class Engine : WallpaperService.Engine() {
-        private val translations = mutableListOf<Pair<Float, Float>>()
-        private val random = Random(System.currentTimeMillis())
+        private val random = Random(24849010328)
+        private val stars = mutableListOf<Drawable>()
+
+        override fun onCreate(surfaceHolder: SurfaceHolder?) {
+            super.onCreate(surfaceHolder)
+            for (i in 1..5) {
+                ContextCompat.getDrawable(applicationContext, R.drawable.ic_sun)?.apply {
+                    val padding = i.toFloat().toDp()
+                    bounds = Rect(0, 0, padding.toInt(), padding.toInt())
+                    stars.add(this)
+                }
+            }
+        }
 
         override fun onSurfaceRedrawNeeded(holder: SurfaceHolder?) {
             Log.d("Materialize", "onSurfaceRedrawNeeded")
@@ -48,28 +60,23 @@ class MaterialiveService : WallpaperService() {
         }
 
         private fun drawStars(canvas: Canvas) {
-            ContextCompat.getDrawable(applicationContext, R.drawable.ic_sun)?.apply {
-                val padding = 5f.toDp()
-                bounds = Rect(0, 0, padding.toInt(), padding.toInt())
-                canvas.save()
-                val stepMin = canvas.width.toFloat() / 4
-                val stepMax = canvas.width.toFloat()
-                var totalY = 0f
-                while (totalY < canvas.height) {
-                    var returnX = 0f
-                    while (true) {
-                        val x = ((stepMax - stepMin) * random.nextFloat())
-                        if (returnX + x >= canvas.width) break
-                        canvas.translate(x, 0f)
-                        draw(canvas)
-                        returnX += x
-                    }
-                    val y = 10f.toDp()
-                    canvas.translate(returnX * -1, y)
-                    totalY += y
+            canvas.save()
+            var totalY = 0f
+            while (totalY < canvas.height) {
+                var returnX = 0f
+                while (true) {
+                    val star = stars[random.nextInt(0, stars.size - 1)]
+                    val x = ((canvas.width / 2) * random.nextFloat())
+                    if (returnX + x >= canvas.width) break
+                    canvas.translate(x, 0f)
+                    star.draw(canvas)
+                    returnX += x
                 }
-                canvas.restore()
+                val y = 8f.toDp()
+                canvas.translate(returnX * -1, y)
+                totalY += y
             }
+            canvas.restore()
         }
 
         private fun drawSun(canvas: Canvas) {
