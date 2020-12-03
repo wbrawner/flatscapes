@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Materialive</string>
+    <string name="app_name">FlatScapes</string>
     <string name="wallpaper_author">William Brawner</string>
-    <string name="description_materialive">A simple material wallpaper</string>
+    <string name="description_flatscapes">A simple material wallpaper</string>
 </resources>

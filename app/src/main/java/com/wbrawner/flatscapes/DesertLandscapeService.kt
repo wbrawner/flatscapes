@@ -1,4 +1,4 @@
-package com.wbrawner.materialive
+package com.wbrawner.flatscapes
 
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import kotlin.math.max
 import kotlin.random.Random
 
-class MaterialiveService : WallpaperService() {
+class DesertLandscapeService : WallpaperService() {
 
     override fun onCreateEngine() = Engine()
 
@@ -33,7 +33,6 @@ class MaterialiveService : WallpaperService() {
         }
 
         override fun onSurfaceRedrawNeeded(holder: SurfaceHolder?) {
-            Log.d("Materialize", "onSurfaceRedrawNeeded")
             super.onSurfaceRedrawNeeded(holder)
             holder?.draw { canvas ->
                 val canvasRect = Rect(0, 0, canvas.width, canvas.height)

@@ -1,4 +1,4 @@
-package com.wbrawner.materialive
+package com.wbrawner.flatscapes
 
 import org.junit.Test
 
