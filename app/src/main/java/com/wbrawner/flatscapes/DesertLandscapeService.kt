@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.service.wallpaper.WallpaperService
-import android.util.Log
 import android.util.TypedValue
 import android.view.SurfaceHolder
 import androidx.core.content.ContextCompat
@@ -20,6 +19,8 @@ class DesertLandscapeService : WallpaperService() {
     inner class Engine : WallpaperService.Engine() {
         private val random = Random(24849010328)
         private val stars = mutableListOf<Drawable>()
+        private var lastKnownUiModeConfig: Int? = null
+        private var holder: SurfaceHolder? = null
 
         override fun onCreate(surfaceHolder: SurfaceHolder?) {
             super.onCreate(surfaceHolder)
@@ -34,6 +35,8 @@ class DesertLandscapeService : WallpaperService() {
 
         override fun onSurfaceRedrawNeeded(holder: SurfaceHolder?) {
             super.onSurfaceRedrawNeeded(holder)
+            this.holder = holder
+            lastKnownUiModeConfig = applicationContext?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
             holder?.draw { canvas ->
                 val canvasRect = Rect(0, 0, canvas.width, canvas.height)
                 ContextCompat.getDrawable(applicationContext, R.drawable.wallpaper_sky)
@@ -55,6 +58,13 @@ class DesertLandscapeService : WallpaperService() {
                         draw(canvas)
                         canvas.restore()
                     }
+            }
+        }
+
+        override fun onVisibilityChanged(visible: Boolean) {
+            super.onVisibilityChanged(visible)
+            if (applicationContext?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK) != lastKnownUiModeConfig) {
+                onSurfaceRedrawNeeded(this.holder)
             }
         }
 
